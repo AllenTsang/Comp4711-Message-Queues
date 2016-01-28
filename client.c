@@ -5,14 +5,12 @@ int main(int argc, char** argv) {
     int msq_id, retval;
     struct msqid_ds msq_status;
     
-    /*if (argc != 2) {
-        fprintf (stderr, "Usage: %s keyval\n", argv[0]);
+    /*if (argc != 3) {
+        fprintf (stderr, "Usage: %s <priority number> <filename>\n", argv[0]);
         exit(1);
     }*/
     
-    //get filename from standard input
-    
-    //client to server = mtype 1
+    //from filename from stdin?
     
     /*---- Get message queue identifier ------*/
     //mkey = (key_t) atoi(argv[1]);
@@ -27,9 +25,10 @@ int main(int argc, char** argv) {
         exit(3);
     }
     
+    //message to server
     msg.msg_type = 1;
-    sprintf(msg.msg_data, "test message");
-    msg.msg_len = sizeof(msg.msg_data);
+    sprintf(msg.msg_data, "test message: pid %d", getpid());
+    msg.msg_len = strlen(msg.msg_data);
     
     fprintf(stderr, "%s\n", msg.msg_data);
     

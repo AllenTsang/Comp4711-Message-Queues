@@ -1,15 +1,12 @@
 #include "server.h"
 
-int main(int argc, char** argv) {
+int main() {
     key_t mkey = ftok(".", 'c');
-    int msq_id, retval;
+    int retval;
     struct msqid_ds msq_status;
     
-    /*if (argc != 2) {
-        fprintf (stderr, "Usage: %s keyval\n", argv[0]);
-        exit(1);
-    }*/
-  
+    signal(SIGINT, cleanup);
+    
     /*---- Get message queue identifier ------*/
     if ((msq_id = msgget (mkey, IPC_CREAT|0660)) < 0) {
         perror ("msgget failed!");
@@ -31,12 +28,19 @@ int main(int argc, char** argv) {
     //fork and respond
     
     
-    // Remove the message queue
-    if (msgctl (msq_id, IPC_RMID, 0) < 0) {
-        perror ("msgctl (remove queue) failed!");
-        exit (3);
-    }
-    
+    // Cleanup:
+    kill(0, SIGINT);
     
     return 0;
 }
+
+int cleanup(int signo) {
+    // Remove the message queue
+    if(msgctl (msq_id, IPC_RMID, 0) < 0) {
+        perror ("msgctl (remove queue) failed!");
+        exit(3);
+    }
+    exit(0);
+}
+
+//cleanup function
