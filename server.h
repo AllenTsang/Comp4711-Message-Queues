@@ -10,6 +10,6 @@
 int msq_id;
 
 int main();
-int cleanup(int signo);
+void cleanup(int signo);
 
 #endif

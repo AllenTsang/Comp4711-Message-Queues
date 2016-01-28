@@ -28,13 +28,13 @@ int main() {
     //fork and respond
     
     
-    // Cleanup:
+    // Cleanup (parent only):
     kill(0, SIGINT);
     
     return 0;
 }
 
-int cleanup(int signo) {
+void cleanup(int signo) {
     // Remove the message queue
     if(msgctl (msq_id, IPC_RMID, 0) < 0) {
         perror ("msgctl (remove queue) failed!");
