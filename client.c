@@ -10,12 +10,15 @@ int main(int argc, char** argv) {
         exit(1);
     }*/
     
-    //from filename from stdin?
+    //use thread somewhere
+    
+    //from filename from stdin instead of args
+    
+    fprintf(stderr, "Enter your filename and priority level: ");
     
     /*---- Get message queue identifier ------*/
-    //mkey = (key_t) atoi(argv[1]);
     if ((msq_id = msgget (mkey, IPC_CREAT|0660)) < 0) {
-        perror ("msgget failed!");
+        perror("msgget failed!");
         exit(2);
     }
     
@@ -39,6 +42,14 @@ int main(int argc, char** argv) {
 	} 
     
     //get reply and print
+    
+    /*
+    if((retval = read_message(msq_id, getpid(), &msg)) == 1) {
+        perror("read_message failed");
+        exit(4);
+    }
+    */
+    
     
     
     return 0;
