@@ -19,3 +19,10 @@ int read_message(int qid, long type, struct msgbuf *qbuf ) {
     } 
     return (result); 
 } 
+
+
+void set_message(int pid, char* buffer) {
+    msg.msg_type = pid;
+    sprintf(msg.msg_data, buffer);
+    msg.msg_len = strlen(msg.msg_data);
+}

@@ -55,6 +55,9 @@ void handle_client() {
     //open file
     if((fp = fopen(filename,"r")) == 0) {
         perror("fopen failed");
+        //send no such file message
+        
+        
         exit(1);
     }
     
@@ -62,9 +65,7 @@ void handle_client() {
     
     
     //create message
-    msg.msg_type = clientpid;
-    sprintf(msg.msg_data, "this is a test message");
-    msg.msg_len = strlen(msg.msg_data);
+    set_message(clientpid, "this is a test message");
     
     //send message
     if((send_message(msq_id, &msg)) == -1) { 
