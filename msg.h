@@ -9,6 +9,7 @@
 #define MAXMSGDATA (4096-16)
 /* don't want sizeof(Msg) > 4096 */
 #define MSGHDRSIZE (sizeof(msg) - MAXMSGDATA)
+#define LINESIZE 80
 
 /* length of msg_len and msg_type */
 struct msgbuf{

@@ -10,6 +10,7 @@
 int msq_id;
 
 int main();
+void handle_client();
 void cleanup(int signo);
 
 #endif
