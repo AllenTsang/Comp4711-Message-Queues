@@ -40,6 +40,7 @@ int main() {
 void handle_client() {
     char filename[LINESIZE] = "";
     int clientpid = 0, priority = 0;
+    FILE *fp;
     
     signal(SIGINT, SIG_DFL);
     //full server read process here - open file to read, packetize and send messages
@@ -52,7 +53,10 @@ void handle_client() {
     fprintf(stderr, "clientpid: %d\npriority: %d\nfilename: %s\n", clientpid, priority, filename);
     
     //open file
-    
+    if((fp = fopen(filename,"r")) == 0) {
+        perror("fopen failed");
+        exit(1);
+    }
     
     //packetize
     
@@ -67,6 +71,12 @@ void handle_client() {
         perror("send_message failed"); 
         exit(1); 
 	} 
+    
+    //close file
+    if(fclose(fp) != 0) {
+        perror("fclose failed");
+        exit(1);
+    }
     
     exit(0);
 }
