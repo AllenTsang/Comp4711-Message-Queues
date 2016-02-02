@@ -56,8 +56,11 @@ void handle_client() {
     if((fp = fopen(filename,"r")) == 0) {
         perror("fopen failed");
         //send no such file message
-        
-        
+        set_message(clientpid, "No such file.");
+        if((send_message(msq_id, &msg)) == -1) { 
+            perror("send_message failed on no such file"); 
+            exit(1); 
+        } 
         exit(1);
     }
     
