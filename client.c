@@ -51,7 +51,7 @@ int main() {
         exit(4);
     }
     
-    
+    fprintf(stderr, "%s", msg.msg_data);
     
     
     return 0;

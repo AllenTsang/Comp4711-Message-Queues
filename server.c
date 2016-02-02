@@ -45,6 +45,8 @@ void handle_client() {
     //full server read process here - open file to read, packetize and send messages
     fprintf(stderr, "child process %d\n", getpid());
     
+    
+    
     sscanf(msg.msg_data, "%d %d %s", &clientpid, &priority, filename);
     
     fprintf(stderr, "clientpid: %d\npriority: %d\nfilename: %s\n", clientpid, priority, filename);
@@ -55,8 +57,16 @@ void handle_client() {
     //packetize
     
     
-    //send message
+    //create message
+    msg.msg_type = clientpid;
+    sprintf(msg.msg_data, "this is a test message");
+    msg.msg_len = strlen(msg.msg_data);
     
+    //send message
+    if((send_message(msq_id, &msg)) == -1) { 
+        perror("send_message failed"); 
+        exit(1); 
+	} 
     
     exit(0);
 }
