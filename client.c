@@ -30,8 +30,8 @@ int main() {
     //fill in message to server
     //msg.msg_type = 1;
     //send pid, priority, filename in message
-    //sprintf(buffer, "%d %d %s", getpid(), priority, filename);
     
+    sprintf(buffer, "%d %d %s", getpid(), priority, filename);
     set_message(1, buffer);
     
     //msg.msg_len = strlen(msg.msg_data);
