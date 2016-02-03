@@ -81,7 +81,8 @@ NOTES:
     child process.  Resets SIGINT to its default behavior, reads the client
     request message for its pid, priority and requested filename.  If the
     requested file exists, it is sent through the message queue, then the
-    file is closed and the process exits.
+    file is closed and the process exits.  The amount of file data per message
+    is determined by the requested priority.
 */
 void handle_client() {
     char filename[LINESIZE], buffer[MAXMSGDATA];
@@ -91,6 +92,10 @@ void handle_client() {
     signal(SIGINT, SIG_DFL);
     
     sscanf(msg.msg_data, "%d %d %s", &clientpid, &priority, filename);
+    
+    if(priority == 0) {
+        priority = 1;
+    }
     
     if((fp = fopen(filename,"r")) == 0) {
         sprintf(buffer, "No such file.");
