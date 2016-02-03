@@ -52,7 +52,7 @@ void handle_client() {
         perror("fopen failed");
         //send no such file message
         set_message(clientpid, "No such file.");
-        if((send_message(msq_id, &msg)) == -1) { 
+        if((send_message(msq_id, &msg)) == -1) {
             perror("send_message failed on no such file"); 
             exit(1); 
         } 
@@ -71,6 +71,7 @@ void handle_client() {
     while(!feof(fp)) {
         fread(buffer, sizeof(buffer), 1, fp);
         //create message
+        buffer[MAXMSGDATA] = EOF;
         set_message(clientpid, buffer);
         
         //send message

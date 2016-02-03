@@ -40,7 +40,7 @@ int main() {
 	} 
     
     //get reply and print
-    while((retval = read_message(msq_id, getpid(), &msg)) == (sizeof(msg) - sizeof(long))) {
+    while((retval = read_message(msq_id, getpid(), &msg)) != -1) {
         fprintf(stdout, "%s", msg.msg_data);
         fflush(stdout);
         if(strchr(msg.msg_data, EOF)) {
