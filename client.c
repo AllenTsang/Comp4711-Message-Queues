@@ -15,26 +15,21 @@ int main() {
     fprintf(stderr, "Filename: %s\nPriority: %d\n", filename, priority);
     
     
-    /*---- Get message queue identifier ------*/
+    //get message queue identifier
     if ((msq_id = msgget(mkey, IPC_CREAT|0660)) < 0) {
         perror("msgget failed");
         exit(2);
     }
     
-    /*--- get status info -----------------*/
+    //get status info
     if (msgctl(msq_id, IPC_STAT, &msq_status) < 0) {
         perror("msgctl(get status) failed");
         exit(3);
     }
     
-    //fill in message to server
-    //msg.msg_type = 1;
-    //send pid, priority, filename in message
-    
+    //write pid, priority, filename in message to server
     sprintf(buffer, "%d %d %s", getpid(), priority, filename);
     set_message(1, buffer);
-    
-    //msg.msg_len = strlen(msg.msg_data);
     
     fprintf(stderr, "Message sent: %s\n", msg.msg_data);
     

@@ -7,14 +7,14 @@ int main() {
     
     signal(SIGINT, cleanup);
     
-    /*---- Get message queue identifier ------*/
-    if ((msq_id = msgget(mkey, IPC_CREAT|0660)) < 0) {
+    //get message queue identifier
+    if((msq_id = msgget(mkey, IPC_CREAT|0660)) < 0) {
         perror("msgget failed");
         exit(2);
     }
     
-    /*--- get status info -----------------*/
-    if (msgctl(msq_id, IPC_STAT, &msq_status) < 0) {
+    //get status info
+    if(msgctl(msq_id, IPC_STAT, &msq_status) < 0) {
         perror("msgctl(get status) failed");
         exit(3);
     }
@@ -32,10 +32,8 @@ int main() {
             handle_client();
         }
     }
-    //Cleanup (parent only):
-    //kill(0, SIGINT);
-    //return 0;
 }
+
 
 void handle_client() {
     char filename[LINESIZE] = "";
