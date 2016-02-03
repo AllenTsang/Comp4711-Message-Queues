@@ -60,15 +60,14 @@ void handle_client() {
     }
     
     //packetize
-    /*
-    size_t current = 0, size = 0;
+    size_t current = 0, fsize = 0;
     fseek(fp, 0, SEEK_END);
-    size = ftell(fp);
+    fsize = ftell(fp);
     fseek(fp, 0, SEEK_SET);
-    */
     
     char buffer[MAXMSGDATA] = "";
-    while(fread(buffer, sizeof(char), MAXMSGDATA, fp) > 0) {
+    while(current < fsize) {
+        current += fread(buffer, sizeof(char), MAXMSGDATA, fp);
         //create message
         set_message(clientpid, buffer);
         
