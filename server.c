@@ -69,10 +69,7 @@ void handle_client() {
     
     char buffer[MAXMSGDATA];
     while(!feof(fp)) {
-        if(fread(buffer, sizeof(buffer), 1, fp) != 1) {
-            perror("fread failed");
-            exit(1);
-        }
+        fread(buffer, sizeof(buffer), 1, fp);
         //create message
         set_message(clientpid, buffer);
         
