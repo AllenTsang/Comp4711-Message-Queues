@@ -71,7 +71,6 @@ void handle_client() {
     while(!feof(fp)) {
         fread(buffer, sizeof(buffer), 1, fp);
         //create message
-        buffer[MAXMSGDATA] = EOF;
         set_message(clientpid, buffer);
         
         //send message
@@ -81,6 +80,14 @@ void handle_client() {
         } 
         memset(buffer, '\0', MAXMSGDATA);
     }
+    
+    buffer[0] = EOF;
+    set_message(clientpid, buffer);
+    //send message
+    if((send_message(msq_id, &msg)) == -1) { 
+        perror("send_message failed"); 
+        exit(1); 
+    } 
     
     
     //close file
