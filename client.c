@@ -42,7 +42,7 @@ int main() {
     //get reply and print
     
     
-    while((retval = read_message(msq_id, getpid(), &msg)) == MAXMSGDATA) {
+    while((retval = read_message(msq_id, getpid(), &msg)) == (sizeof(msg) - sizeof(long))) {
         fprintf(stderr, "%s", msg.msg_data);
     } 
     

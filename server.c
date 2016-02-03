@@ -68,7 +68,7 @@ void handle_client() {
     */
     
     char buffer[MAXMSGDATA] = "";
-    while(fread(buffer, sizeof(char), MAXMSGDATA, fp) > 0) {
+    while(fread(buffer, sizeof(buffer), 1, fp) == 1) {
         //create message
         set_message(clientpid, buffer);
         

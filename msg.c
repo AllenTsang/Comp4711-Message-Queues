@@ -21,8 +21,9 @@ int read_message(int qid, long type, struct msgbuf *qbuf ) {
 } 
 
 
-void set_message(int pid, char* buffer) {
+void set_message(int pid, char buffer[]) {
     msg.msg_type = pid;
     sprintf(msg.msg_data, buffer);
+    buffer[MAXMSGDATA] = '\0';
     msg.msg_len = strlen(msg.msg_data);
 }
