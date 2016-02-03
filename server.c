@@ -93,7 +93,8 @@ void handle_client() {
     sscanf(msg.msg_data, "%d %d %s", &clientpid, &priority, filename);
     
     if((fp = fopen(filename,"r")) == 0) {
-        set_message(clientpid, "No such file.");
+        sprintf(buffer, "No such file.");
+        set_message(clientpid, buffer);
         if((send_message(msq_id, &msg)) == -1) {
             fatal("Failed to send 'no such file' message.");
         } 
