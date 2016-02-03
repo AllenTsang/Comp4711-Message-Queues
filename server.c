@@ -98,12 +98,13 @@ void handle_client() {
         if((send_message(msq_id, &msg)) == -1) {
             fatal("Failed to send 'no such file' message.");
         } 
+        final_packet(clientpid);
         fatal("Failed to open file.");
     }
     
     //file reading loop, until EOF is read
     while(!feof(fp)) {
-        fread(buffer, sizeof(buffer), 1, fp);
+        fread(buffer, sizeof(buffer)/priority, 1, fp);
         set_message(clientpid, buffer);
         if((send_message(msq_id, &msg)) == -1) { 
             fatal("send_message failed");
