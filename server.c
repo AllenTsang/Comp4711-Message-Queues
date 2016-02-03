@@ -87,8 +87,7 @@ void handle_client() {
     if((send_message(msq_id, &msg)) == -1) { 
         perror("send_message failed"); 
         exit(1); 
-    } 
-    
+    }
     
     //close file
     if(fclose(fp) != 0) {

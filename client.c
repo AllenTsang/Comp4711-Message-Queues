@@ -41,7 +41,9 @@ int main() {
     
     //get reply and print
     while((retval = read_message(msq_id, getpid(), &msg)) != -1) {
-        if(strchr(msg.msg_data, EOF)) {
+        if(msg.msg_data[0] == EOF) {
+            fprintf(stdout, "\n");
+            fflush(stdout);
             break;
         }
         fprintf(stdout, "%s", msg.msg_data);
