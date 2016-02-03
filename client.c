@@ -43,7 +43,7 @@ int main() {
     while((retval = read_message(msq_id, getpid(), &msg)) == (sizeof(msg) - sizeof(long))) {
         fprintf(stdout, "%s", msg.msg_data);
         fflush(stdout);
-        if(msg.msg_data[strlen(msg.msg_data)] == EOF) {
+        if(strchr(msg.msg_data, EOF)) {
             break;
         }
     } 
