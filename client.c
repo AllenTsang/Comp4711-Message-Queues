@@ -12,7 +12,7 @@ int main() {
     fprintf(stderr, "Enter your filename and priority level: ");
     scanf("%79s %d", filename, &priority);
     
-    fprintf(stderr, "Filename: %s\nPriority: %d\n", filename, priority);
+    //fprintf(stderr, "Filename: %s\nPriority: %d\n", filename, priority);
     
     
     //get message queue identifier
@@ -42,13 +42,16 @@ int main() {
     //get reply and print
     
     
-    if((retval = read_message(msq_id, getpid(), &msg)) == 1) {
+    while((retval = read_message(msq_id, getpid(), &msg)) == MAXMSGDATA) {
+        fprintf(stderr, "%s", msg.msg_data);
+    } 
+    
+    if(retval == -1) {
         perror("read_message failed");
         exit(4);
     }
     
     fprintf(stderr, "%s", msg.msg_data);
-    
     
     return 0;
 }

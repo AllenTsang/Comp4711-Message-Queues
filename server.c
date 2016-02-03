@@ -21,7 +21,7 @@ int main() {
     
     //forever loop read, runs until ^C
     for(;;) {
-        if((retval = read_message(msq_id, 1, &msg)) == 1) {
+        if((retval = read_message(msq_id, 1, &msg)) == -1) {
             perror("read_message failed");
             exit(4);
         }
