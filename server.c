@@ -93,7 +93,7 @@ void handle_client() {
     
     sscanf(msg.msg_data, "%d %d %s", &clientpid, &priority, filename);
     
-    if(priority == 0) {
+    if(priority < 1) {
         priority = 1;
     }
     
