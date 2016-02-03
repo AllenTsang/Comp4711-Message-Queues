@@ -67,8 +67,12 @@ void handle_client() {
     fseek(fp, 0, SEEK_SET);
     */
     
-    char buffer[MAXMSGDATA] = "";
-    while(fread(buffer, sizeof(buffer), 1, fp) == 1) {
+    char buffer[MAXMSGDATA];
+    while(!feof(fp)) {
+        if(fread(buffer, sizeof(buffer), 1, fp) != 1) {
+            perror("fread failed");
+            exit(1);
+        }
         //create message
         set_message(clientpid, buffer);
         
@@ -77,8 +81,8 @@ void handle_client() {
             perror("send_message failed"); 
             exit(1); 
         } 
+        memset(buffer, '\0', MAXMSGDATA);
     }
-    
     
     
     //close file

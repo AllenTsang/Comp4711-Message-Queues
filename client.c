@@ -4,7 +4,7 @@ int main() {
     key_t mkey = ftok(".", 'c');
     int msq_id, retval, priority = 0;
     struct msqid_ds msq_status;
-    char filename[LINESIZE] = "", buffer[MAXMSGDATA] = "";
+    char filename[LINESIZE], buffer[MAXMSGDATA];
     
     //use thread somewhere
     
@@ -43,7 +43,8 @@ int main() {
     
     
     while((retval = read_message(msq_id, getpid(), &msg)) == (sizeof(msg) - sizeof(long))) {
-        fprintf(stderr, "%s", msg.msg_data);
+        fprintf(stdout, "%s", msg.msg_data);
+        fflush(stdout);
     } 
     
     if(retval == -1) {
@@ -51,7 +52,6 @@ int main() {
         exit(4);
     }
     
-    fprintf(stderr, "%s", msg.msg_data);
     
     return 0;
 }
