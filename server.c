@@ -42,13 +42,10 @@ void handle_client() {
     
     signal(SIGINT, SIG_DFL);
     //full server read process here - open file to read, packetize and send messages
-    fprintf(stderr, "child process %d\n", getpid());
-    
-    
     
     sscanf(msg.msg_data, "%d %d %s", &clientpid, &priority, filename);
     
-    fprintf(stderr, "clientpid: %d\npriority: %d\nfilename: %s\n", clientpid, priority, filename);
+    //fprintf(stderr, "clientpid: %d\npriority: %d\nfilename: %s\n", clientpid, priority, filename);
     
     //open file
     if((fp = fopen(filename,"r")) == 0) {
@@ -63,16 +60,26 @@ void handle_client() {
     }
     
     //packetize
+    /*
+    size_t current = 0, size = 0;
+    fseek(fp, 0, SEEK_END);
+    size = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+    */
+    
+    char buffer[MAXMSGDATA] = "";
+    while(fread(buffer, sizeof(char), MAXMSGDATA, fp) > 0) {
+        //create message
+        set_message(clientpid, buffer);
+        
+        //send message
+        if((send_message(msq_id, &msg)) == -1) { 
+            perror("send_message failed"); 
+            exit(1); 
+        } 
+    }
     
     
-    //create message
-    set_message(clientpid, "this is a test message");
-    
-    //send message
-    if((send_message(msq_id, &msg)) == -1) { 
-        perror("send_message failed"); 
-        exit(1); 
-	} 
     
     //close file
     if(fclose(fp) != 0) {
