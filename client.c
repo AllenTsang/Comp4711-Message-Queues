@@ -41,11 +41,11 @@ int main() {
     
     //get reply and print
     while((retval = read_message(msq_id, getpid(), &msg)) != -1) {
-        fprintf(stdout, "%s", msg.msg_data);
-        fflush(stdout);
         if(strchr(msg.msg_data, EOF)) {
             break;
         }
+        fprintf(stdout, "%s", msg.msg_data);
+        fflush(stdout);
     } 
     
     if(retval == -1) {
