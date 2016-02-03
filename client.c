@@ -39,15 +39,14 @@ int main() {
         exit(1); 
 	} 
     
-    while(msg.msg_len == MAXMSGDATA) {
-        //get reply and print
-        if((retval = read_message(msq_id, 1, &msg)) == -1) {
-            perror("read_message failed");
-            exit(4);
-        }
+    //get reply and print
+    while((retval = read_message(msq_id, getpid(), &msg)) == (sizeof(msg) - sizeof(long))) {
         fprintf(stdout, "%s", msg.msg_data);
         fflush(stdout);
-    }
+        if(msg.msg_data[strlen(msg.msg_data)] == EOF) {
+            break;
+        }
+    } 
     
     if(retval == -1) {
         perror("read_message failed");
