@@ -1,5 +1,42 @@
+/*
+SOURCE FILE:    client.c
+PROGRAM:        Comp4981 Assignment 2 - Message Queue Client/Server
+FUNCTIONS:      int main()
+                void fatal(char* s)
+DATE:           Jan 25, 2016
+REVISIONS:      v1
+DESIGNER:       Allen Tsang
+PROGRAMMER:     Allen Tsang
+NOTES:
+    The client program for a message queue client/server.  It prompts
+    the user for a filename to request, as well as a priority level.
+    It sends this request to the server, and is either sent the file,
+    or notified that the server could not find it.  In either case,
+    the client exits.
+*/
 #include "client.h"
 
+/*
+FUNCTION:       main
+DATE:           Jan 25, 2016
+REVISIONS:      Jan 29, 2016
+                    Added functionality.
+DESIGNER:       Allen Tsang
+PROGRAMMER:     Allen Tsang
+INTERFACE:      int main()
+RETURNS:        0 if the program exits normally.
+                Other values may be returned otherwise.
+NOTES:
+    The main function runs the client side of the program.  It prompts
+    the user for a filename to request, as well as a priority level.
+    Once it has these, it looks for the message queue set up by the
+    server and retrieves the relevant information before sending the
+    file request message.  It then enters a read loop until the server
+    sends an EOF packet signaling that the entire file requested has
+    been sent.  Alternatively, the server can notify the client that
+    the file could not be found, then send the EOF packet.  Once this
+    is done, the client exits.
+*/
 int main() {
     key_t mkey = ftok(".", 'c');
     int msq_id, retval, priority = 0;
@@ -10,36 +47,24 @@ int main() {
     
     
     fprintf(stderr, "Enter your filename and priority level: ");
-    scanf("%79s %d", filename, &priority);
+    scanf("%s %d", filename, &priority);
     
-    //fprintf(stderr, "Filename: %s\nPriority: %d\n", filename, priority);
-    
-    
-    //get message queue identifier
-    if ((msq_id = msgget(mkey, IPC_CREAT|0660)) < 0) {
-        perror("msgget failed");
-        exit(2);
+    if((msq_id = msgget(mkey, IPC_CREAT|0660)) < 0) {
+        fatal("Failed to get message queue identifier.");
     }
     
-    //get status info
-    if (msgctl(msq_id, IPC_STAT, &msq_status) < 0) {
-        perror("msgctl(get status) failed");
-        exit(3);
+    if(msgctl(msq_id, IPC_STAT, &msq_status) < 0) {
+        fatal("Failed to get status info.");
     }
     
-    //write pid, priority, filename in message to server
     sprintf(buffer, "%d %d %s", getpid(), priority, filename);
     set_message(1, buffer);
     
-    fprintf(stderr, "Message sent: %s\n", msg.msg_data);
-    
-    //send message
 	if((send_message(msq_id, &msg)) == -1) { 
-        perror("send_message failed"); 
-        exit(1); 
+        fatal("Failed to send message");
 	} 
     
-    //get reply and print
+    //read loop, until server sends the EOF final packet
     while((retval = read_message(msq_id, getpid(), &msg)) != -1) {
         if(msg.msg_data[0] == EOF) {
             fprintf(stdout, "\n");
@@ -51,10 +76,25 @@ int main() {
     } 
     
     if(retval == -1) {
-        perror("read_message failed");
-        exit(4);
+        fatal("Failed to read message.");
     }
     
-    
     return 0;
+}
+
+/*
+FUNCTION:       fatal
+DATE:           Jan 13, 2016
+REVISIONS:      v1
+DESIGNER:       Allen Tsang
+PROGRAMMER:     Allen Tsang
+INTERFACE:      void fatal(char* s)
+                    char* s: description of the error to print
+RETURNS:        void
+NOTES:
+    Prints the description of the error and exits the process.
+*/
+void fatal(char* s) {
+    perror(s);
+    exit(1);
 }

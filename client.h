@@ -6,5 +6,5 @@
 #include "msg.h"
 
 int main();
-
+void fatal(char* s);
 #endif

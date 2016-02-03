@@ -10,6 +10,7 @@ int msq_id;
 
 int main();
 void handle_client();
+void final_packet(int clientpid);
 void cleanup(int signo);
-
+void fatal(char* s);
 #endif
