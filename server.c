@@ -85,7 +85,7 @@ NOTES:
     is determined by the requested priority.
 */
 void handle_client() {
-    char filename[LINESIZE], buffer[MAXMSGDATA];
+    char filename[LINESIZE], buffer[MAXMSGDATA] = "";
     int clientpid = 0, priority = 0;
     FILE *fp;
     
