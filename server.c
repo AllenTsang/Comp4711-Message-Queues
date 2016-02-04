@@ -115,9 +115,6 @@ void handle_client() {
             fatal("send_message failed");
         } 
         memset(buffer, '\0', MAXMSGDATA);
-        if(kill(clientpid, 0)) {
-            remove_messages(msq_id, clientpid);
-        }
     }
     final_packet(clientpid);
     

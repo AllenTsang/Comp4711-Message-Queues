@@ -21,5 +21,4 @@ struct msgbuf {
 int send_message(int msg_qid, struct msgbuf *qbuf);
 int read_message(int qid, long type, struct msgbuf *qbuf);
 void set_message(long mtype, char buffer[]);
-void remove_messages(int qid, int pid);
 #endif

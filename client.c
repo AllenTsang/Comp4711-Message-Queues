@@ -64,6 +64,8 @@ int main() {
         fatal("Failed to send message");
 	} 
     
+    signal(SIGINT, SIG_IGN);
+    
     //read loop, until server sends the EOF final packet
     while((retval = read_message(msq_id, getpid(), &msg)) != -1) {
         if(msg.msg_data[0] == EOF) {

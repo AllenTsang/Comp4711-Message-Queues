@@ -81,15 +81,3 @@ void set_message(long mtype, char buffer[]) {
     buffer[MAXMSGDATA] = '\0';
     msg.msg_len = strlen(msg.msg_data);
 }
-
-
-void remove_messages(int qid, int pid) {
-    while(1) {
-        int length = sizeof(struct msgbuf) - sizeof(long);
-        msgrcv(qid, 0, length, pid, 0);
-        read_message(qid, pid, 0);
-        if(errno == ENOMSG) {
-            break;
-        }
-    }
-}
