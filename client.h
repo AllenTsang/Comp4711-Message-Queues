@@ -8,6 +8,6 @@
 #include "msg.h"
 
 int main();
-void* thread_function(void* params);
+void* prompt_thread(void* params);
 void fatal(char* s);
 #endif

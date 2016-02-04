@@ -42,13 +42,12 @@ int main() {
     int msq_id, retval, priority = 0;
     struct msqid_ds msq_status;
     char filename[LINESIZE], buffer[MAXMSGDATA];
+    char* prompt = "Enter your filename and priority level: ";
     pthread_t thread;
     
-    //use thread somewhere
-    pthread_create(&thread, NULL, thread_function, NULL);
+    pthread_create(&thread, NULL, prompt_thread, prompt);
     pthread_join(thread, NULL);
     
-    fprintf(stderr, "Enter your filename and priority level: ");
     scanf("%s %d", filename, &priority);
     
     if((msq_id = msgget(mkey, IPC_CREAT|0660)) < 0) {
@@ -86,9 +85,22 @@ int main() {
     return 0;
 }
 
-
-void* thread_function(void* params) {
-    
+/*
+FUNCTION:       prompt_thread
+DATE:           Feb 3, 2016
+REVISIONS:      v1
+DESIGNER:       Allen Tsang
+PROGRAMMER:     Allen Tsang
+INTERFACE:      void* prompt_thread(void* params)
+                    void* params: char* to prompt with
+RETURNS:        void
+NOTES:
+    Run by a thread created by the client.  Prompts the user
+    for input, then exits.
+*/
+void* prompt_thread(void* params) {
+    fprintf(stderr, (char*)params);
+    pthread_exit(0);
     return 0;
 }
 
