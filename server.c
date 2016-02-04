@@ -95,6 +95,8 @@ void handle_client() {
     
     if(priority < 1) {
         priority = 1;
+    } else if(priority > MAXMSGDATA) {
+        priority = MAXMSGDATA;
     }
     
     if((fp = fopen(filename,"r")) == 0) {
@@ -121,6 +123,7 @@ void handle_client() {
     if(fclose(fp) != 0) {
         fatal("file close failed");
     }
+    fprintf(stderr, "Client %d finished at priority %d\n", clientpid, priority);
     exit(0);
 }
 
