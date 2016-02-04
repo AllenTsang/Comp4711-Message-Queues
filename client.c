@@ -42,9 +42,11 @@ int main() {
     int msq_id, retval, priority = 0;
     struct msqid_ds msq_status;
     char filename[LINESIZE], buffer[MAXMSGDATA];
+    pthread_t thread;
     
     //use thread somewhere
-    
+    pthread_create(&thread, NULL, thread_function, NULL);
+    pthread_join(thread, NULL);
     
     fprintf(stderr, "Enter your filename and priority level: ");
     scanf("%s %d", filename, &priority);
@@ -80,6 +82,12 @@ int main() {
     if(retval == -1) {
         fatal("Failed to read message.");
     }
+    
+    return 0;
+}
+
+
+void* thread_function(void* params) {
     
     return 0;
 }

@@ -1,4 +1,4 @@
-CC = gcc -Wall
+CC = gcc -Wall -pthread
 
 all: client server
 
