@@ -31,7 +31,7 @@ NOTES:
 int send_message(int qid, struct msgbuf *qbuf) { 
     int result, length; 
     /* The length is essentially the size of the structure minus sizeof(mtype) */ 
-    length = sizeof (struct msgbuf) - sizeof(long);         
+    length = sizeof (struct msgbuf) - sizeof(long);
     if((result = msgsnd(qid, qbuf, length, 0)) == -1) { 
         return -1; 
     } 
@@ -55,8 +55,8 @@ NOTES:
 int read_message(int qid, long type, struct msgbuf *qbuf) { 
 	int result, length; 
     // The length is essentially the size of the structure minus sizeof(mtype)  
-    length = sizeof(struct msgbuf) - sizeof(long);         
-    if ((result = msgrcv(qid, qbuf, length, type,  0)) == -1) { 
+    length = sizeof(struct msgbuf) - sizeof(long);
+    if ((result = msgrcv(qid, qbuf, length, type, 0)) == -1) { 
         return -1; 
     } 
     return (result); 
@@ -80,4 +80,16 @@ void set_message(long mtype, char buffer[]) {
     sprintf(msg.msg_data, buffer);
     buffer[MAXMSGDATA] = '\0';
     msg.msg_len = strlen(msg.msg_data);
+}
+
+
+void remove_messages(int qid, int pid) {
+    while(1) {
+        int length = sizeof(struct msgbuf) - sizeof(long);
+        msgrcv(qid, 0, length, pid, 0);
+        read_message(qid, pid, 0);
+        if(errno == ENOMSG) {
+            break;
+        }
+    }
 }
